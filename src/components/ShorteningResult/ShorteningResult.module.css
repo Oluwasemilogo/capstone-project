@@ -1,0 +1,81 @@
+.result {
+	background-color: white;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0.5em 2em;
+	margin-bottom: 1.5em;
+	border-radius: 0.25em;
+	position: relative;
+}
+
+.originalLink {
+	color: hsl(257, 27%, 26%);
+	display: inline-block;
+	max-width: 60%;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+hr {
+	width: 100%;
+	display: none;
+}
+
+.newLink {
+	color: hsl(180, 68%, 43%);
+	margin-left: auto;
+	margin-right: 1em;
+}
+
+.copyBtn {
+	background-color: hsl(180, 66%, 49%);
+	color: hsl(0, 0%, 100%);
+	border: none;
+	cursor: pointer;
+	padding: 0.6em 1.5em;
+	border-radius: 0.3em;
+	font-size: 0.8rem;
+	width: 6rem;
+}
+
+.copyBtn.copied {
+	background-color: hsl(257, 27%, 26%);
+}
+
+.copyBtn.copied:hover {
+	background-color: hsl(258, 26%, 39%);
+}
+
+@media only screen and (max-width: 1200px) {
+	.result {
+		flex-direction: column;
+		justify-content: flex-start;
+		align-items: flex-start;
+		padding: 1.5em;
+	}
+
+	.result p {
+		font-size: 0.8rem;
+	}
+
+	.originalLink {
+		margin-bottom: 0.5em;
+		max-width: 98%;
+	}
+
+	hr {
+		display: block;
+	}
+
+	.newLink {
+		margin-left: 0;
+		margin-top: 0.5em;
+		margin-bottom: 1em;
+	}
+
+	.copyBtn {
+		width: 100%;
+	}
+}
