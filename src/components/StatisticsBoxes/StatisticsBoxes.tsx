@@ -16,7 +16,7 @@ const StatisticsBoxes = () => {
       id: 2,
       imgSrc: recordsImg,
       title: "Detailed Records",
-      text: "Gain insights into who is clicking your links. Knowing when and where people engage with your content helps inform better decisions.",
+      text: "Gain insights into who is clicking your links...Knowing when and where people engage with your content helps inform better decisions.",
     },
     {
       id: 3,
