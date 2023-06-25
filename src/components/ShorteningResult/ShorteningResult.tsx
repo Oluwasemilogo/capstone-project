@@ -13,15 +13,19 @@ interface ShorteningResultProps {
 }
 
 const ShorteningResult: React.FC<ShorteningResultProps> = ({ links }) => {
-  const [copyLink, setCopyLink] = useState<string>("");
+  const [, setCopyLink] = useState<string>(""); // Use the `copyLink` state
+
   const [copied, setCopied] = useState<string>("");
 
   const handleCopyLink = (linkToCopy: string, linkId: string) => {
-    setCopyLink(linkToCopy);
+    setCopyLink(linkToCopy); // Update the `copyLink` state
     navigator.clipboard.writeText(linkToCopy);
     setCopied(linkId);
     console.log(linkToCopy);
   };
+
+  // ... Rest of the code
+
 
   return (
     <>

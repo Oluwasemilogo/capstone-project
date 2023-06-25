@@ -5,7 +5,7 @@ import recordsImg from "../images/icon-detailed-records.svg";
 import customizableImg from "../images/icon-fully-customizable.svg";
 
 const StatisticsBoxes = () => {
-  const [boxesContent, setBoxesContent] = useState([
+  const [boxesContent] = useState([
     {
       id: 1,
       imgSrc: recognitionImg,
