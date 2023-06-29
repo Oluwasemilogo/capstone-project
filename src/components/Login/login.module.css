@@ -1,0 +1,24 @@
+.login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login input {
+  width: 100%;
+  padding: 0.5em;
+  margin-bottom: 1em;
+}
+
+.login button {
+  background-color: hsl(180, 66%, 49%);
+  color: hsl(0, 0%, 100%);
+  border: none;
+  padding: 0.4em 1em;
+  cursor: pointer;
+  border-radius: 3em;
+}
+
+.login button:hover {
+  background-color: hsl(180, 77%, 54%);
+}

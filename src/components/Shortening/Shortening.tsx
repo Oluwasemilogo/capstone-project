@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import ShorteningLoading from "../ShorteningLoading/ShorteningLoading";
 import ShorteningResult from "../ShorteningResult/ShorteningResult";
-import styles from "./Shortnening.module.css";
+import styles from "./Shortening.module.css";
 import axios from "axios";
 import classNames from "classnames";
+
 
 interface Link {
   originalLink: string;
@@ -11,7 +12,7 @@ interface Link {
   linkId: string;
 }
 
-const Shortening: React.FC = () => {
+const Shortening: React.FC = ({ isLoggedIn }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [inputValue, setInputValue] = useState<string>("");
   const [inputPlaceholder, setInputPlaceholder] = useState<string>(
@@ -20,31 +21,41 @@ const Shortening: React.FC = () => {
   const [links, setLinks] = useState<Link[]>([]);
   const [error, setError] = useState<boolean>(false);
 
-  const getData = (originalLink: string) => {
-    setLoading(true);
+  const getData = async (originalLink: string) => {
+    const token = localStorage.getItem("token");
 
-    let url = `https://api.shrtco.de/v2/shorten?url=${originalLink}`;
+    if (isLoggedIn) {
+      // The user is logged in, proceed with the request to shorten the links.
+      setLoading(true);
 
-    axios
-      .get(url)
-      .then((resp) => {
-        setLoading(false);
+      axios
+        .post(
+          `https://linkr-mvp2.onrender.com/create`,
+          { url: originalLink },
+          { headers: { Authorization: `Bearer ${token}` } }
+        )
+        .then((resp) => {
+          setLoading(false);
 
-        let shortenLink = resp.data.result.full_short_link;
-        setLinks([
-          ...links,
-          {
-            originalLink: inputValue,
-            newLink: shortenLink,
-            linkId: new Date().getTime().toString(),
-          },
-        ]);
-      })
-      .catch((err) => {
-        setLoading(false);
-        setError(true);
-        console.log(err);
-      });
+          let shortenLink = resp.data.newLink;
+          setLinks([
+            ...links,
+            {
+              originalLink: inputValue,
+              newLink: shortenLink,
+              linkId: new Date().getTime().toString(),
+            },
+          ]);
+        })
+        .catch((err) => {
+          setLoading(false);
+          setError(true);
+          console.log(err);
+        });
+    } else {
+      // Handle the case when the user is not logged in.
+      console.log("User is not logged in.");
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,7 +65,7 @@ const Shortening: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     let regex =
-      /(http|https):\/\/(\w+:{0,1}\w*)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%!\-/]))?/;
+      /(http|https):\/\/(\w+:{0,1}\w*)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%!\-\\/]))?/;
 
     if (!inputValue || !regex.test(inputValue)) {
       setError(true);
@@ -85,7 +96,7 @@ const Shortening: React.FC = () => {
             onChange={handleChange}
           />
           <button className={styles.submitBtn} disabled={loading}>
-            Shorten It!
+            Shorten It
           </button>
         </form>
       </div>
