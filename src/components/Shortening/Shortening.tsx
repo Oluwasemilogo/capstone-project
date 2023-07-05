@@ -1,65 +1,69 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ShorteningLoading from "../ShorteningLoading/ShorteningLoading";
 import ShorteningResult from "../ShorteningResult/ShorteningResult";
-import styles from "./Shortening.module.css";
+import styles from "./Shortnening.module.css";
 import axios from "axios";
 import classNames from "classnames";
-
 
 interface Link {
   originalLink: string;
   newLink: string;
   linkId: string;
+  shortLink: string;
 }
 
-const Shortening: React.FC = ({ isLoggedIn }) => {
+const Shortening: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [inputValue, setInputValue] = useState<string>("");
   const [inputPlaceholder, setInputPlaceholder] = useState<string>(
     "Shorten a link here..."
   );
-  const [links, setLinks] = useState<Link[]>([]);
+  const [shortLinks, setshortLinks] = useState<Link>();
   const [error, setError] = useState<boolean>(false);
 
   const getData = async (originalLink: string) => {
     const token = localStorage.getItem("token");
+    console.log(token);
 
-    if (isLoggedIn) {
-      // The user is logged in, proceed with the request to shorten the links.
-      setLoading(true);
+    setLoading(true);
 
-      axios
-        .post(
-          `https://linkr-mvp2.onrender.com/create`,
-          { url: originalLink },
-          { headers: { Authorization: `Bearer ${token}` } }
-        )
-        .then((resp) => {
-          setLoading(false);
+    axios
+      .post(
+        `https://linkr-mvp2.onrender.com/create`,
+        {
+          originalLink: originalLink,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((resp) => {
+        setLoading(false);
 
-          let shortenLink = resp.data.newLink;
-          setLinks([
-            ...links,
-            {
-              originalLink: inputValue,
-              newLink: shortenLink,
-              linkId: new Date().getTime().toString(),
-            },
-          ]);
-        })
-        .catch((err) => {
-          setLoading(false);
-          setError(true);
-          console.log(err);
-        });
-    } else {
-      // Handle the case when the user is not logged in.
-      console.log("User is not logged in.");
-    }
+        let shortLink: string = resp.data.link.shortLink;
+        console.log(shortLink);
+        setshortLinks(
+          // ...shortLink,
+          {
+            shortLink,
+            originalLink: inputValue,
+            newLink: shortLink,
+            linkId: resp.data.link._id,
+          },
+        );
+      })
+      .catch((err) => {
+        setLoading(false);
+        setError(true);
+        console.log(err);
+      });
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
+    setError(false); // Reset error state when the input changes
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -73,6 +77,7 @@ const Shortening: React.FC = ({ isLoggedIn }) => {
       setInputValue("");
       return;
     }
+
     setError(false);
     getData(inputValue);
     setInputValue("");
@@ -101,8 +106,7 @@ const Shortening: React.FC = ({ isLoggedIn }) => {
         </form>
       </div>
       <div className={styles.resultsWrapper}>
-        {loading && <ShorteningLoading />}
-        {links.length > 0 && <ShorteningResult links={links} />}
+        {loading ? <ShorteningLoading /> : shortLinks?.shortLink  && <ShorteningResult links={shortLinks} />}
       </div>
     </>
   );

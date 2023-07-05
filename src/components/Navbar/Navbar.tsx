@@ -13,7 +13,6 @@ const Navbar: React.FC = () => {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-
   const handleLogin = (username: string, password: string, email: string) => {
     // Handle login logic here
     fetch("https://linkr-mvp2.onrender.com/auth/login", {
@@ -28,16 +27,21 @@ const Navbar: React.FC = () => {
       }),
     })
       .then((response) => response.json())
-      .then((data) => {
-        if (data.success === "true") {
+      .then(
+        (data) => {
+          // if (data.success === "true") {
           navigate("/");
           console.log(data.message);
-          setIsLoggedIn(true);
-        } else {
-          // Handle authentication failure
-          console.log(data);
+          localStorage.setItem("token", data.token);
+          console.log(data.token);
+          setIsLoggedIn(true); // Update isLoggedIn state
         }
-      })
+        //  else {
+        //   // Handle authentication failure
+        //   console.log(data);
+        // }
+        // }
+      )
       .catch((error) => {
         // Handle network or API errors
         console.log("Error:", error);
@@ -62,7 +66,7 @@ const Navbar: React.FC = () => {
         if (data.success === "true") {
           navigate("/");
           console.log(data.message);
-          setIsLoggedIn(true);
+          setIsLoggedIn(true); // Update isLoggedIn state
         } else {
           // Handle sign up failure
           console.log("Sign up failed");

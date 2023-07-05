@@ -3,13 +3,14 @@ import styles from "./ShorteningResult.module.css";
 import classNames from "classnames";
 
 interface Link {
+  shortLink: string;
   originalLink: string;
   newLink: string;
   linkId: string;
 }
 
 interface ShorteningResultProps {
-  links: Link[];
+  links: Link;
 }
 
 const ShorteningResult: React.FC<ShorteningResultProps> = ({ links }) => {
@@ -24,34 +25,34 @@ const ShorteningResult: React.FC<ShorteningResultProps> = ({ links }) => {
     console.log(linkToCopy);
   };
 
-  // ... Rest of the code
+
 
 
   return (
     <>
-      {links
-        ? links.map((link) => (
-            <div key={link.linkId} className={styles.result}>
-              <p className={styles.originalLink}>{link.originalLink}</p>
+   
+            <div key={links.linkId} className={styles.result}>
+              <p className={styles.originalLink}>{links.originalLink}</p>
               <hr />
-              <p className={styles.newLink}>{link.newLink}</p>
+              <p className={styles.newLink}>{links.shortLink}</p>
 
               <button
                 className={classNames(
                   styles.copyBtn,
-                  copied === link.linkId ? styles.copied : null
+                  copied === links.linkId ? styles.copied : null
                 )}
                 onClick={() => {
-                  handleCopyLink(link.newLink, link.linkId);
+                  handleCopyLink(links.newLink, links.linkId);
                 }}
               >
-                {copied === link.linkId ? "Copied" : "Copy"}
+                {copied === links.linkId ? "Copied" : "Copy"}
               </button>
             </div>
-          ))
-        : null}
+     
     </>
   );
 };
 
 export default ShorteningResult;
+
+

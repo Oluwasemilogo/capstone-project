@@ -8,6 +8,7 @@ const SignUp: React.FC<SignUpProps> = ({ onSubmit }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

@@ -7,7 +7,7 @@ const Statistics = () => {
   return (
     <section className={styles.statistics}>
       <div className="container">
-        <Shortening />
+        <Shortening   />
         <div className={styles.statisticsContent}>
           <h3 className={styles.statisticsTitle}>Advanced Statistics</h3>
           <p className={styles.statisticsText}>
